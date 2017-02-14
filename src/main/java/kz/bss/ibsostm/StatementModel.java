@@ -1,30 +1,28 @@
 package kz.bss.ibsostm;
 
-import org.apache.log4j.Logger;
-
 /**
  * @author Andrey Smirnov
  */
-public class StatementModel {
-    private static final Logger LOGGER = Logger.getLogger(StatementModel.class);
-    public static final String STATEMENT1 =
+class StatementModel {
+
+    static final String STATEMENT1 =
             "<kz.bss.ibsostm.StatementModel>\n" +
             "              <StatementDate>" ;
-    public static final String STATEMENT2 =
+    static final String STATEMENT2 =
             "</StatementDate>\n" ;
-    public static final String STATEMENT3 =
+    static final String STATEMENT3 =
             "              <FromDate>" ;
-    public static final String STATEMENT4 =
+    static final String STATEMENT4 =
                     "</FromDate>\n";
-    public static final String STATEMENT5 =
+    static final String STATEMENT5 =
             "              <ToDate>" ;
-    public static final String STATEMENT6 =
+    static final String STATEMENT6 =
                     "</ToDate>\n" ;
-    public static final String STATEMENT7 =
+    static final String STATEMENT7 =
             "              <Final>1</Final>\n" ;
-    public static final String STATEMENT8 =
+    static final String STATEMENT8 =
             "              <Account>";
-    public static final String STATEMENT9 =
+    static final String STATEMENT9 =
                     "</Account>\n" +
             "              <InBal>100.00</InBal>\n" +
             "              <InBalNat>100.00</InBalNat>\n" +
@@ -174,4 +172,8 @@ public class StatementModel {
             "                </DocInfoModel>\n" +
             "              </docs>\n" +
             "        </kz.bss.ibsostm.StatementModel>";
+
+    private StatementModel() {
+        throw new IllegalAccessError("Statement const class");
+    }
 }

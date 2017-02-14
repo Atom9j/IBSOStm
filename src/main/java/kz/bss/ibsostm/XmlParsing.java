@@ -26,6 +26,10 @@ class XmlParsing {
 
     private static final String CONF_PATH = "conf.properties";
 
+    private XmlParsing() {
+        throw new IllegalAccessError("XML class");
+    }
+
     //Создаем тело выписки с данными из запроса
     static LinkedList<String> prepareStatement(LinkedList xml) {
         LinkedList<String> accList = new LinkedList<>();
