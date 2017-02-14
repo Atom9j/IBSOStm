@@ -5,10 +5,10 @@
     <display-name>Archetype Created Web Application</display-name>
     <servlet>
         <servlet-name>ConfServlet</servlet-name>
-        <servlet-class>ConfServlet</servlet-class>
+        <servlet-class>kz.bss.ibsostm.ConfServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ConfServlet</servlet-name>
-        <url-pattern>/ConfServlet</url-pattern>
+        <url-pattern>/kz.bss.ibsostm.ConfServlet</url-pattern>
     </servlet-mapping>
 </web-app>

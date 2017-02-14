@@ -1,3 +1,5 @@
+package kz.bss.ibsostm;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -6,7 +8,7 @@ import org.apache.log4j.Logger;
 public class StatementModel {
     private static final Logger LOGGER = Logger.getLogger(StatementModel.class);
     public static final String STATEMENT1 =
-            "<StatementModel>\n" +
+            "<kz.bss.ibsostm.StatementModel>\n" +
             "              <StatementDate>" ;
     public static final String STATEMENT2 =
             "</StatementDate>\n" ;
@@ -171,5 +173,5 @@ public class StatementModel {
             "                  <DocType>3</DocType>\n" +
             "                </DocInfoModel>\n" +
             "              </docs>\n" +
-            "        </StatementModel>";
+            "        </kz.bss.ibsostm.StatementModel>";
 }

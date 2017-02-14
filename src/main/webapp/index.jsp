@@ -21,7 +21,7 @@
                 var login = $('#login').val();
                 var pass = $('#pass').val();
 
-                $.get('ConfServlet', {
+                $.get('kz.bss.ibsostm.ConfServlet', {
                     action: action,
                     ip: ip,
                     port: port,
@@ -36,7 +36,7 @@
             $('#currentConfig').click(function (event) {
                 var action = "Current_config";
 
-                $.get('ConfServlet', {
+                $.get('kz.bss.ibsostm.ConfServlet', {
                     action: action
                 }, function (responseText) {
                     var str = document.getElementById('current').value;

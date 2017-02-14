@@ -1,3 +1,5 @@
+package kz.bss.ibsostm;
+
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
