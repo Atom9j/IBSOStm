@@ -1,0 +1,28 @@
+#something {
+    position: absolute;
+    height: 200px;
+    width: 400px;
+    margin: -250px 0px 0px -300px;
+    top: 50%;
+    left: 50%;
+}
+
+#result {
+    top: 50%;
+    left: 50%;
+    margin: -300px 0 0 290px;
+    height: 250px;
+    width: 250px;
+}
+
+#current {
+    color: green;
+}
+
+#dateOfBirth {
+    width: 120px;
+}
+
+#numOfBin, #numOfIin {
+    width: 85px;
+}
