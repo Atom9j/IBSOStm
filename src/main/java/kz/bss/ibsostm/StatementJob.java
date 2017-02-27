@@ -6,6 +6,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 /**
  * @author Andrey Smirnov
@@ -18,8 +19,16 @@ public class StatementJob implements Job {
             throws JobExecutionException {
         try {
             System.out.println("Job start!");
-            XmlParsing.insertNewStatement(XmlParsing.prepareStatement(XmlParsing.allStatementQueries()));
-            XmlParsing.deleteRequests();
+            LinkedList<String> queries = XmlParsing.allStatementQueries();
+            if ( !queries.isEmpty() )
+            {
+                LinkedList<String> prepStatement = XmlParsing.prepareStatement(queries);
+                if ( XmlParsing.insertNewStatement(prepStatement) )
+                {
+                    XmlParsing.deleteRequests();
+                }
+            }
+            else System.out.println("No statement requests found!!");
         } catch (SQLException e) {
             e.printStackTrace();
         }

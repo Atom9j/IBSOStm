@@ -31,12 +31,12 @@ class XmlParsing {
     }
 
     //Создаем тело выписки с данными из запроса
-    static LinkedList<String> prepareStatement(LinkedList xml) {
+    static LinkedList<String> prepareStatement(LinkedList<String> xml) {
         LinkedList<String> accList = new LinkedList<>();
         String xmlAccounts;
-        for(String str: (LinkedList<String>) xml) {
+        for( String str : xml ) {
             xmlAccounts = str;
-            if (!"".equals(xmlAccounts))
+            if ( !"".equals(xmlAccounts) )
             {
                 try {
                     DocumentBuilder docBuild = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -44,10 +44,12 @@ class XmlParsing {
                     doc.getDocumentElement().normalize();
                     NodeList nodeLst = doc.getElementsByTagName("Accounts");
                     Node accountNode = nodeLst.item(0);
-                    if (accountNode.getNodeType() == Node.ELEMENT_NODE) {
+                    if ( accountNode.getNodeType() == Node.ELEMENT_NODE )
+                    {
                         Element childElmnt = (Element) accountNode;
                         NodeList childElmntLst = childElmnt.getElementsByTagName("string");
-                        for (int a = 0; a < childElmntLst.getLength(); a++) {
+                        for ( int a = 0; a < childElmntLst.getLength(); a++ )
+                        {
                             Element accElmnt = (Element) childElmntLst.item(a);
                             NodeList account = accElmnt.getChildNodes();
                             accList.add(StatementModel.STATEMENT1+new SimpleDateFormat("dd.MM.yyyy HH:mm").format(System.currentTimeMillis())+
@@ -107,7 +109,7 @@ class XmlParsing {
         PreparedStatement preparedStatement = null;
         try {
             dbConnection = getDBConnection();
-            if(dbConnection != null)
+            if ( dbConnection != null )
             {
                 preparedStatement = dbConnection.prepareStatement(
                         "SELECT * FROM TMP_EXTSYS_INCOMING where DOCTYPE = ?");
@@ -115,23 +117,33 @@ class XmlParsing {
                 preparedStatement.setInt(1, 11);
                 //выполняем запрос
                 ResultSet result = preparedStatement.executeQuery();
-                while (result.next()) {
+                while (result.next())
+                {
                    /* System.out.println("Номер в выборке #" + result.getRow()
                             + "\t Номер в базе #" + result.getString("PSPID")
                             + "\t" + result.getString("DOCCONTENT"));*/
                     messages.add(result.getString("DOCCONTENT"));
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             LOGGER.error(e);
-        } finally {
-            if (preparedStatement != null) {
+        }
+        finally
+        {
+            if (preparedStatement != null)
+            {
                 preparedStatement.close();
             }
-            if (dbConnection != null) {
-                try {
+            if (dbConnection != null)
+            {
+                try
+                {
                     dbConnection.close();
-                } catch (SQLException ex) {
+                }
+                catch (SQLException ex)
+                {
                     LOGGER.error(ex);
                 }
             }
@@ -140,17 +152,22 @@ class XmlParsing {
     }
 
     //Вставляем готовую выписку
-    static void insertNewStatement(LinkedList param) throws SQLException {
+    static boolean insertNewStatement(LinkedList param) throws SQLException
+    {
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
         String docContent;
-        try {
+        boolean itsOk = false;
+        try
+        {
             dbConnection = getDBConnection();
-            if(dbConnection != null)
+            if ( dbConnection != null )
             {
-                for (Object aParam : param) {
+                for (Object aParam : param)
+                {
                     docContent = aParam.toString();
-                    if(!"".equals(docContent)) {
+                    if( !"".equals(docContent) )
+                    {
                         preparedStatement = dbConnection.prepareStatement(
                                 "INSERT INTO TMP_EXTSYS_OUTGOING (ID, DOCTYPE, DOCCONTENT) VALUES (? , ? , ?)");
                         preparedStatement.setString(1, UUID.randomUUID().toString());
@@ -160,48 +177,66 @@ class XmlParsing {
                         //выполняем запрос
                         preparedStatement.executeUpdate();
                         preparedStatement.close();
+                        itsOk = true;
                     }
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             LOGGER.error(e);
-        } finally {
-            if (preparedStatement != null) {
+        }
+        finally
+        {
+            if ( preparedStatement != null )
+            {
                 preparedStatement.close();
             }
-            if (dbConnection != null) {
-                try {
+            if ( dbConnection != null )
+            {
+                try
+                {
                     dbConnection.close();
-                } catch (SQLException ex) {
+                }
+                catch (SQLException ex)
+                {
                     LOGGER.error(ex);
                 }
             }
         }
+        return itsOk;
     }
 
     //Убираем за собой запросы выписок, есть шанс удалить необработанный запрос :)
-    static void deleteRequests() throws SQLException {
+    static void deleteRequests() throws SQLException
+    {
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
-        try {
+        try
+        {
             dbConnection = getDBConnection();
-            if(dbConnection != null)
+            if( dbConnection != null )
             {
                 preparedStatement = dbConnection.prepareStatement("DELETE TMP_EXTSYS_INCOMING where DOCTYPE = ?");
                 preparedStatement.setInt(1, 11);
                 preparedStatement.executeUpdate();
                 LOGGER.info("Records is deleted!");
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             LOGGER.error(e.getMessage());
-        } finally {
-            if (preparedStatement != null) {
+        }
+        finally
+        {
+            if ( preparedStatement != null )
+            {
                 preparedStatement.close();
             }
-            if (dbConnection != null) {
+            if ( dbConnection != null )
+            {
                 dbConnection.close();
             }
         }
     }
-
 }
