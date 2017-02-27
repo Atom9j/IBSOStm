@@ -20,10 +20,10 @@ public class SchedulerListener implements ServletContextListener{
         System.out.println("Context Initialized");
 
         try {
-            JobDetail job = JobBuilder.newJob(StatementJob.class).withIdentity("statementJob", "group1").build();
+            JobDetail job = JobBuilder.newJob(StatementJob.class).withIdentity("statementJob", "ibsoStatements").build();
             Trigger trigger = TriggerBuilder
                     .newTrigger()
-                    .withIdentity("statementTrigger", "group1")
+                    .withIdentity("statementTrigger", "ibsoStatements")
                     .withSchedule(
                             SimpleScheduleBuilder.simpleSchedule()
                                     .withIntervalInSeconds(30).repeatForever())

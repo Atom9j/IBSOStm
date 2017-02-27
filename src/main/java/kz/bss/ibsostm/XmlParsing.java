@@ -78,7 +78,7 @@ class XmlParsing {
         String user = null;
         String pass = null;
         try {
-            FileInputStream inputStream = new FileInputStream(System.getenv("CATALINA_HOME")+"webapps/"+CONF_PATH);
+            FileInputStream inputStream = new FileInputStream(System.getenv("CATALINA_HOME")+"/webapps/"+CONF_PATH);
             jdbcProp.load(inputStream);
             url = jdbcProp.getProperty("jdbc.URL");
             user = jdbcProp.getProperty("jdbc.USER");
@@ -176,6 +176,7 @@ class XmlParsing {
                         preparedStatement.setString(3, docContent);
                         //выполняем запрос
                         preparedStatement.executeUpdate();
+                        LOGGER.info(preparedStatement.executeUpdate()+ " - records is inserted!");
                         preparedStatement.close();
                         itsOk = true;
                     }
@@ -220,7 +221,7 @@ class XmlParsing {
                 preparedStatement = dbConnection.prepareStatement("DELETE TMP_EXTSYS_INCOMING where DOCTYPE = ?");
                 preparedStatement.setInt(1, 11);
                 preparedStatement.executeUpdate();
-                LOGGER.info("Records is deleted!");
+                LOGGER.info(preparedStatement.executeUpdate()+ " - records is deleted!");
             }
         }
         catch (SQLException e)
