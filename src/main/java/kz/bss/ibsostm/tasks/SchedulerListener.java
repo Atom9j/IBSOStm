@@ -19,7 +19,7 @@ public class SchedulerListener implements ServletContextListener
     @Override
     public void contextInitialized(ServletContextEvent servletContext)
     {
-        System.out.println("Context Initialized");
+        LOGGER.info("Context Initialized");
 
         try
         {
@@ -38,21 +38,21 @@ public class SchedulerListener implements ServletContextListener
         }
         catch ( SchedulerException e )
         {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContext)
     {
-        System.out.println("Context Destroyed");
+        LOGGER.info("Context Destroyed");
         try
         {
             scheduler.shutdown();
         }
         catch ( SchedulerException e )
         {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
