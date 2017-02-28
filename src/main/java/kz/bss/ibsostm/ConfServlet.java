@@ -1,5 +1,6 @@
 package kz.bss.ibsostm;
 
+import kz.bss.ibsostm.handling.Consts;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,8 @@ import java.io.PrintWriter;
 /**
  * @author Andrey Smirnov
  */
-public class ConfServlet extends HttpServlet {
+public class ConfServlet extends HttpServlet
+{
     private static final Logger LOGGER = Logger.getLogger(ConfServlet.class);
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +32,7 @@ public class ConfServlet extends HttpServlet {
         String current = "";
         //Проверка на вид запрашиваемой задачи
         String action = request.getParameter("action");
-        if( "Save_config".equals(action) )
+        if ( "Save_config".equals(action) )
         {
             String port = request.getParameter("port");
             String ip = request.getParameter("ip");
@@ -38,31 +40,37 @@ public class ConfServlet extends HttpServlet {
             String login = request.getParameter("login");
             String pass = request.getParameter("pass");
 
-            File d = new File(System.getenv("CATALINA_HOME"),"webapps");
+            File d = new File(System.getenv("CATALINA_HOME"), "webapps");
             d.mkdirs();
-            File propertyFile = new File(d,"conf.properties");
-            try {
+            File propertyFile = new File(d, Consts.CONF_PATH);
+            try
+            {
                 //проверяем, что если файл не существует то создаем его
-                if (!propertyFile.exists())
+                if ( !propertyFile.exists() )
                 {
                     propertyFile.createNewFile();
                 }
                 //PrintWriter обеспечит возможности записи в файл
                 PrintWriter out = new PrintWriter(propertyFile.getAbsoluteFile());
 
-                try {
+                try
+                {
                     //Записываем текст в файл
-                    out.print("jdbc.URL=jdbc:oracle:thin:@" + ip + ":"+ port + ":" + sid +"\r\n"+
-                             "jdbc.USER=" + login + "\r\n" +
-                            "jdbc.PASS="+ pass);
+                    out.print("jdbc.URL=jdbc:oracle:thin:@" + ip + ":" + port + ":" + sid + "\r\n" +
+                            "jdbc.USER=" + login + "\r\n" +
+                            "jdbc.PASS=" + pass);
                     current = "Текущая схема " + login;
                     response.getWriter().write(current);
-                } finally {
+                }
+                finally
+                {
                     //После чего мы должны закрыть файл
                     //Иначе файл не запишется
                     out.close();
                 }
-            } catch (IOException e) {
+            }
+            catch ( IOException e )
+            {
                 throw new RuntimeException(e);
             }
         }

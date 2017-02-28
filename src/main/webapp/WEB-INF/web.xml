@@ -12,6 +12,6 @@
         <url-pattern>/kz.bss.ibsostm.ConfServlet</url-pattern>
     </servlet-mapping>
     <listener>
-        <listener-class>kz.bss.ibsostm.SchedulerListener</listener-class>
+        <listener-class>kz.bss.ibsostm.tasks.SchedulerListener</listener-class>
     </listener>
 </web-app>

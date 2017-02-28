@@ -1,4 +1,4 @@
-package kz.bss.ibsostm;
+package kz.bss.ibsostm.tasks;
 
 import org.apache.log4j.Logger;
 import org.quartz.*;
@@ -10,16 +10,19 @@ import javax.servlet.ServletContextListener;
 /**
  * @author Andrey Smirnov
  */
-public class SchedulerListener implements ServletContextListener{
+public class SchedulerListener implements ServletContextListener
+{
     private static final Logger LOGGER = Logger.getLogger(SchedulerListener.class);
 
     Scheduler scheduler = null;
 
     @Override
-    public void contextInitialized(ServletContextEvent servletContext) {
+    public void contextInitialized(ServletContextEvent servletContext)
+    {
         System.out.println("Context Initialized");
 
-        try {
+        try
+        {
             JobDetail job = JobBuilder.newJob(StatementJob.class).withIdentity("statementJob", "ibsoStatements").build();
             Trigger trigger = TriggerBuilder
                     .newTrigger()
@@ -33,19 +36,21 @@ public class SchedulerListener implements ServletContextListener{
             scheduler.start();
             scheduler.scheduleJob(job, trigger);
         }
-        catch (SchedulerException e) {
+        catch ( SchedulerException e )
+        {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent servletContext) {
+    public void contextDestroyed(ServletContextEvent servletContext)
+    {
         System.out.println("Context Destroyed");
         try
         {
             scheduler.shutdown();
         }
-        catch (SchedulerException e)
+        catch ( SchedulerException e )
         {
             e.printStackTrace();
         }
