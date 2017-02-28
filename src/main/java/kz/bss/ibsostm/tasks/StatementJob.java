@@ -23,7 +23,6 @@ public class StatementJob implements Job
     {
         try
         {
-            LOGGER.info("Job start!");
             List<String> queries = DBInteraction.allStatementQueries();
             if ( !queries.isEmpty() )
             {
@@ -33,15 +32,10 @@ public class StatementJob implements Job
                     DBInteraction.deleteRequests();
                 }
             }
-            else
-            {
-                LOGGER.info("No statement requests found!!");
-            }
         }
         catch ( SQLException e )
         {
             LOGGER.error(e);
         }
-        LOGGER.info("Job finished!");
     }
 }
