@@ -46,12 +46,12 @@
         });
 
         function Reset() {
-            $('#current').text(""),
-                $('#ip').text(""),
-                $('#port').text(""),
-                $('#sid').text(""),
-                $('#login').text(""),
-                $('#pass').text("");
+            document.getElementById('current').value = "",
+            document.getElementById('ip').value = "",
+            document.getElementById('port').value = "",
+            document.getElementById('sid').value = "",
+            document.getElementById('login').value = "",
+            document.getElementById('pass').value = "";
         }
 
         jQuery(function ($) {
@@ -130,13 +130,20 @@
                             <input id="pass" type="text" required maxlength="20" onkeyup="check();">
                         </div>
                     </td>
+                </tr>
+                <tr>
                     <td>
-                        <button id="submitConfig" type="button" class="pure-button pure-button-primary" onclick="Reset()" disabled = "disabled">
+                        <button id="submitConfig" type="button" class="pure-button pure-button-primary" disabled = "disabled">
                             Сохранить
                         </button>
+                    </td>
+                    <td>
                         <button id="currentConfig" type="button" class="pure-button pure-button-primary" onclick="Reset()">
                             Текущая конфигурация
                         </button>
+                    </td>
+                    <td>
+                        <input type="reset" value="Очистить">
                     </td>
                 </tr>
             </table>

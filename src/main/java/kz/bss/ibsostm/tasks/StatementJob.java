@@ -8,7 +8,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Andrey Smirnov
@@ -23,11 +23,11 @@ public class StatementJob implements Job
     {
         try
         {
-            System.out.println("Job start!");
-            LinkedList<String> queries = DBInteraction.allStatementQueries();
+            LOGGER.info("Job start!");
+            List<String> queries = DBInteraction.allStatementQueries();
             if ( !queries.isEmpty() )
             {
-                LinkedList<String> prepStatement = ParsingXml.createStatementBody(queries);
+                List<String> prepStatement = ParsingXml.createStatementBody(queries);
                 if ( DBInteraction.insertNewStatement(prepStatement) )
                 {
                     DBInteraction.deleteRequests();
@@ -35,13 +35,13 @@ public class StatementJob implements Job
             }
             else
             {
-                System.out.println("No statement requests found!!");
+                LOGGER.info("No statement requests found!!");
             }
         }
         catch ( SQLException e )
         {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
-        System.out.println("Job finished!");
+        LOGGER.info("Job finished!");
     }
 }

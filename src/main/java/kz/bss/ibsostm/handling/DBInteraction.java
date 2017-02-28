@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -17,6 +18,11 @@ public class DBInteraction
 {
     private static final Logger LOGGER = Logger.getLogger(DBInteraction.class);
 
+    private DBInteraction()
+    {
+        throw new IllegalAccessError("DBInteraction class");
+    }
+
     //Конект к БД
     private static Connection getDBConnection()
     {
@@ -26,12 +32,12 @@ public class DBInteraction
         String pass = null;
         try
         {
-            FileInputStream inputStream = new FileInputStream(System.getenv("CATALINA_HOME") + "/webapps/" + Consts.CONF_PATH);
+            FileInputStream inputStream = new FileInputStream(System.getenv(Consts.CATALINA) + "/" + Consts.FLDR + "/" + Consts.CONF_PATH);
             jdbcProp.load(inputStream);
-            url = jdbcProp.getProperty("jdbc.URL");
-            user = jdbcProp.getProperty("jdbc.USER");
-            pass = jdbcProp.getProperty("jdbc.PASS");
-            LOGGER.info(url + user + pass);
+            url = jdbcProp.getProperty(Consts.URL);
+            user = jdbcProp.getProperty(Consts.USER);
+            pass = jdbcProp.getProperty(Consts.PASS);
+            inputStream.close();
         }
         catch ( IOException e )
         {
@@ -44,7 +50,7 @@ public class DBInteraction
         }
         catch ( ClassNotFoundException e )
         {
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e);
         }
         try
         {
@@ -53,13 +59,13 @@ public class DBInteraction
         }
         catch ( SQLException e )
         {
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e);
         }
         return dbConnection;
     }
 
     //Вытаскиваем все запросы на выписку
-    public static LinkedList<String> allStatementQueries() throws SQLException
+    public static List<String> allStatementQueries() throws SQLException
     {
         LinkedList<String> messages = new LinkedList<>();
         Connection dbConnection = null;
@@ -77,9 +83,6 @@ public class DBInteraction
                 ResultSet result = preparedStatement.executeQuery();
                 while ( result.next() )
                 {
-                   /* System.out.println("Номер в выборке #" + result.getRow()
-                            + "\t Номер в базе #" + result.getString("PSPID")
-                            + "\t" + result.getString("DOCCONTENT"));*/
                     messages.add(result.getString("DOCCONTENT"));
                 }
             }
@@ -110,7 +113,7 @@ public class DBInteraction
     }
 
     //Вставляем готовую выписку
-    public static boolean insertNewStatement(LinkedList param) throws SQLException
+    public static boolean insertNewStatement(List param) throws SQLException
     {
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
@@ -125,21 +128,18 @@ public class DBInteraction
                 for ( Object aParam : param )
                 {
                     docContent = aParam.toString();
-                    if ( !"".equals(docContent) )
-                    {
-                        preparedStatement = dbConnection.prepareStatement(
-                                "INSERT INTO TMP_EXTSYS_OUTGOING (ID, DOCTYPE, DOCCONTENT) VALUES (? , ? , ?)");
-                        preparedStatement.setString(1, UUID.randomUUID().toString());
-                        //12 - выпискa
-                        preparedStatement.setInt(2, 12);
-                        preparedStatement.setString(3, docContent);
-                        //выполняем запрос
-                        count += preparedStatement.executeUpdate();
-                        preparedStatement.close();
-                        itsOk = true;
-                    }
+                    preparedStatement = dbConnection.prepareStatement(
+                            "INSERT INTO TMP_EXTSYS_OUTGOING (ID, DOCTYPE, DOCCONTENT) VALUES (? , ? , ?)");
+                    preparedStatement.setString(1, UUID.randomUUID().toString());
+                    //12 - выпискa
+                    preparedStatement.setInt(2, 12);
+                    preparedStatement.setString(3, docContent);
+                    //выполняем запрос
+                    count += preparedStatement.executeUpdate();
+                    preparedStatement.close();
+                    itsOk = true;
                 }
-                LOGGER.info(count + " - records is inserted!");
+                LOGGER.info(count + " records is inserted!");
             }
         }
         catch ( SQLException e )
@@ -180,12 +180,12 @@ public class DBInteraction
                 preparedStatement = dbConnection.prepareStatement("DELETE TMP_EXTSYS_INCOMING where DOCTYPE = ?");
                 preparedStatement.setInt(1, 11);
                 int count = preparedStatement.executeUpdate();
-                LOGGER.info(count + " - records is deleted!");
+                LOGGER.info(count + " records is deleted!");
             }
         }
         catch ( SQLException e )
         {
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e);
         }
         finally
         {

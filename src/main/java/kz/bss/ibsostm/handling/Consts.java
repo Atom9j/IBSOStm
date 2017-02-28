@@ -8,6 +8,26 @@ public class Consts
 
     public static final String CONF_PATH = "conf.properties";
 
+    public static final String SAVE_CONFIG = "Save_config";
+
+    public static final String NO_CONF = "Текущей схемы нет!";
+
+    public static final String OK_CONF = "Текущая схема ";
+
+    //Файл настроек подключения
+    public static final String URL = "jdbc.URL";
+
+    public static final String USER = "jdbc.USER";
+
+    public static final String PASS = "jdbc.PASS";
+
+    public static final String JDBC = "=jdbc:oracle:thin:@";
+
+    public static final String CATALINA = "CATALINA_HOME";
+
+    public static final String FLDR = "webapps";
+
+    //Выписка
     static final String STATEMENT1 =
             "<kz.bss.ibsostm.StatementModel>\n" +
                     "              <StatementDate>";
