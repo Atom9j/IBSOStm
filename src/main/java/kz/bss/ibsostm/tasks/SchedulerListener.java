@@ -27,9 +27,7 @@ public class SchedulerListener implements ServletContextListener
             Trigger trigger = TriggerBuilder
                     .newTrigger()
                     .withIdentity("statementTrigger", "ibsoStatements")
-                    .withSchedule(
-                            SimpleScheduleBuilder.simpleSchedule()
-                                    .withIntervalInSeconds(12).repeatForever())
+                    .withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(12))
                     .build();
             // schedule it
             scheduler = new StdSchedulerFactory().getScheduler();

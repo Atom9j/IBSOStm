@@ -32,7 +32,8 @@ public class DBInteraction
         String pass = null;
         try
         {
-            FileInputStream inputStream = new FileInputStream(System.getenv(Consts.CATALINA) + "/" + Consts.FLDR + "/" + Consts.CONF_PATH);
+            FileInputStream inputStream = new FileInputStream(System.getenv(Consts.CATALINA)
+                    + "/" + Consts.FLDR + "/" + Consts.CONF_PATH);
             jdbcProp.load(inputStream);
             url = jdbcProp.getProperty(Consts.URL);
             user = jdbcProp.getProperty(Consts.USER);
@@ -93,21 +94,7 @@ public class DBInteraction
         }
         finally
         {
-            if ( preparedStatement != null )
-            {
-                preparedStatement.close();
-            }
-            if ( dbConnection != null )
-            {
-                try
-                {
-                    dbConnection.close();
-                }
-                catch ( SQLException ex )
-                {
-                    LOGGER.error(ex);
-                }
-            }
+            finallyBlock(dbConnection, preparedStatement);
         }
         return messages;
     }
@@ -148,21 +135,7 @@ public class DBInteraction
         }
         finally
         {
-            if ( preparedStatement != null )
-            {
-                preparedStatement.close();
-            }
-            if ( dbConnection != null )
-            {
-                try
-                {
-                    dbConnection.close();
-                }
-                catch ( SQLException ex )
-                {
-                    LOGGER.error(ex);
-                }
-            }
+            finallyBlock(dbConnection, preparedStatement);
         }
         return itsOk;
     }
@@ -189,13 +162,26 @@ public class DBInteraction
         }
         finally
         {
-            if ( preparedStatement != null )
-            {
-                preparedStatement.close();
-            }
-            if ( dbConnection != null )
+            finallyBlock(dbConnection, preparedStatement);
+        }
+    }
+
+    private static void finallyBlock(Connection dbConnection, PreparedStatement preparedStatement)
+            throws SQLException
+    {
+        if ( preparedStatement != null )
+        {
+            preparedStatement.close();
+        }
+        if ( dbConnection != null )
+        {
+            try
             {
                 dbConnection.close();
+            }
+            catch ( SQLException ex )
+            {
+                LOGGER.error(ex);
             }
         }
     }

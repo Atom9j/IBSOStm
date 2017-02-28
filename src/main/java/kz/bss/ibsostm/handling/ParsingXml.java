@@ -49,13 +49,13 @@ public class ParsingXml
                     {
                         Element accElmnt = (Element) childElmntLst.item(a);
                         NodeList account = accElmnt.getChildNodes();
-                        accList.add(Consts.STATEMENT1 + new SimpleDateFormat("dd.MM.yyyy HH:mm").format(System.currentTimeMillis()) +
-                                Consts.STATEMENT2 + Consts.STATEMENT3 +
-                                doc.getElementsByTagName("BeginDate").item(0).getTextContent() +
-                                Consts.STATEMENT4 + Consts.STATEMENT5 +
-                                doc.getElementsByTagName("EndDate").item(0).getTextContent() +
-                                Consts.STATEMENT6 + Consts.STATEMENT7 +
-                                Consts.STATEMENT8 + account.item(0).getNodeValue() + Consts.STATEMENT9);
+                        accList.add(Consts.STATEMENT1 + currentDate()
+                                + Consts.STATEMENT2 + Consts.STATEMENT3
+                                + doc.getElementsByTagName("BeginDate").item(0).getTextContent()
+                                + Consts.STATEMENT4 + Consts.STATEMENT5
+                                + doc.getElementsByTagName("EndDate").item(0).getTextContent()
+                                + Consts.STATEMENT6 + Consts.STATEMENT7
+                                + Consts.STATEMENT8 + account.item(0).getNodeValue() + Consts.STATEMENT9);
                     }
                 }
             }
@@ -66,5 +66,10 @@ public class ParsingXml
         }
         LOGGER.info("Accounts in iteration : " + accList.size());
         return accList;
+    }
+
+    private static String currentDate()
+    {
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(System.currentTimeMillis());
     }
 }

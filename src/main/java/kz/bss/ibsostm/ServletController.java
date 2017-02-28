@@ -79,7 +79,8 @@ public class ServletController
         String current = null;
         try
         {
-            FileInputStream inputStream = new FileInputStream(System.getenv(Consts.CATALINA) + "/" + Consts.FLDR + "/" + Consts.CONF_PATH);
+            FileInputStream inputStream = new FileInputStream(System.getenv(Consts.CATALINA)
+                    + "/" + Consts.FLDR + "/" + Consts.CONF_PATH);
             jdbcProp.load(inputStream);
             current = jdbcProp.getProperty(Consts.USER);
             inputStream.close();
