@@ -29,7 +29,7 @@ public class SchedulerListener implements ServletContextListener
                     .withIdentity("statementTrigger", "ibsoStatements")
                     .withSchedule(
                             SimpleScheduleBuilder.simpleSchedule()
-                                    .withIntervalInSeconds(30).repeatForever())
+                                    .withIntervalInSeconds(12).repeatForever())
                     .build();
             // schedule it
             scheduler = new StdSchedulerFactory().getScheduler();
